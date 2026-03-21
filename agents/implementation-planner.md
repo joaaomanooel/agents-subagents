@@ -56,7 +56,7 @@ When the environment expects YAML at the top:
 #### 1. Project context and scope
 
 - **Goal** — One to two sentences.
-- **Tech stack** — Languages, frameworks, libraries, versions if known.
+- **Tech stack** — Languages, frameworks, libraries, and versions **inferred from repository artifacts** (manifests, configs, CI, dominant languages). **Do not assume** a default web or TypeScript stack; state what the evidence shows and mark unknowns explicitly.
 - **Core constraints** — Performance, security, cost, compliance.
 
 #### 2. Architecture and trade-offs
