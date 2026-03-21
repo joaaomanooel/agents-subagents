@@ -140,6 +140,8 @@ Rules are loaded from `rules/` directory (see INDEX.md for full list). Key rules
 
 ## Framework-Specific Guidelines
 
+The subsections below are **example conventions for projects that use those stacks** (TypeScript, NestJS, Jest-style tests). They are not universal defaults: when operating on another repository, **infer the real stack** from that project's files and rules; use this section only where it applies.
+
 ### TypeScript Standards
 
 - **NO `any`** — Use `unknown` or create proper types
