@@ -29,6 +29,7 @@ agents/
 ├── ai-dev-planner.md           # Legacy (transition); use implementation-planner
 ├── ai-test-engineer.md         # Integration/E2E test strategy agent
 ├── ai-ux-writer.md             # UX writing agent
+├── pencil-ui-ux-specialist.md  # Pencil MCP, UI/UX, color tokens, shadcn/Tailwind design-to-code (en-US)
 ├── code-reviewer.md            # Legacy (transition); use unified-code-reviewer
 ├── context-docs.md             # Legacy (transition); use docs-context-agent
 ├── docs-context-keeper.md      # Legacy (transition); use docs-context-agent
