@@ -2,6 +2,14 @@
 
 This repository contains AI agent definitions used by opencode and similar tools.
 
+## Preferred agents (pilot)
+
+For new flows, prefer **implementation-planner**, **unified-code-reviewer**, and **docs-context-agent**. They supersede the paired legacy agents listed in the tree below. After the pilot period, legacy duplicates may be removed; until then, treat **ai-dev-planner**, **plan-specialist**, **ai-code-reviewer**, **code-reviewer**, **context-docs**, and **docs-context-keeper** as **deprecated in transition**.
+
+## Frontmatter: do not use `model`
+
+Do **not** add a `model` key (e.g. `model: fast`) to agent frontmatter. Tooling selects models outside these files; keeping frontmatter free of `model` avoids drift and duplicate sources of truth.
+
 ## Table of Contents
 
 - [Repository Structure](#repository-structure)
@@ -14,14 +22,18 @@ This repository contains AI agent definitions used by opencode and similar tools
 
 ```text
 agents/
-├── ai-code-reviewer.md      # Code review agent
-├── ai-dev-planner.md        # Development planning agent
-├── ai-test-engineer.md      # Test generation agent
-├── ai-ux-writer.md          # UX writing agent
-├── code-reviewer.md         # Alternative code review agent
-├── context-docs.md          # Context documentation agent
-├── docs-context-keeper.md   # Documentation keeper agent
-└── plan-specialist.md       # Planning specialist agent
+├── implementation-planner.md   # Preferred: LLM-optimized implementation plans (en-US)
+├── unified-code-reviewer.md    # Preferred: plan-aware + deep checklist review (en-US)
+├── docs-context-agent.md       # Preferred: .docs maintenance + session summaries (en-US)
+├── ai-code-reviewer.md         # Legacy (transition); use unified-code-reviewer
+├── ai-dev-planner.md           # Legacy (transition); use implementation-planner
+├── ai-test-engineer.md         # Integration/E2E test strategy agent
+├── ai-ux-writer.md             # UX writing agent
+├── code-reviewer.md            # Legacy (transition); use unified-code-reviewer
+├── context-docs.md             # Legacy (transition); use docs-context-agent
+├── docs-context-keeper.md      # Legacy (transition); use docs-context-agent
+├── plan-specialist.md          # Legacy (transition); use implementation-planner
+└── architecture-haiku-team.md  # Architecture Haiku workshop facilitator
 
 rules/
 ├── 01-follow-all-instructions.md   # Core: obey all instructions precisely
@@ -55,6 +67,7 @@ This is a **markdown-only repository** containing agent definition files. No bui
   ---
   ```
 - Optional: `readonly`, `is_background`
+- Do **not** add `model` in agent frontmatter (see above)
 
 ### Naming Conventions
 
