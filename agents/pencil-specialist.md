@@ -1,8 +1,11 @@
 ---
-name: pencil-ui-ux-specialist
+name: pencil-specialist
 description: "Pencil design, color systems, and UX microcopy specialist. Use when working with .pen files, Pencil MCP, design-to-code with shadcn/ui and Tailwind (any version), or chromatic palettes. Use proactively for screens in Pencil, token sync, or UI copy tied to design."
-readonly: false
-is_background: false
+mode: subagent
+permission:
+  edit: deny
+  write: allow
+  bash: deny
 ---
 
 # Pencil UI/UX specialist

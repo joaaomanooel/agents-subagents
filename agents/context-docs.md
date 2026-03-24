@@ -1,6 +1,12 @@
 ---
-alwaysApply: true
 name: context-docs
+description: "Rule agent that maintains LLM-oriented context under .docs for consistent responses. Creates or updates .docs files to record agreements, assumptions, and contextual decisions. All content in en-US."
+mode: subagent
+permission:
+  edit: deny
+  write: allow
+  bash: deny
+hidden: true
 ---
 
 # Rule: Maintain Context and Agreements in `.docs` for Consistent Responses

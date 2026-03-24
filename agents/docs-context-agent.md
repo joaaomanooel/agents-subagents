@@ -1,8 +1,11 @@
 ---
 name: docs-context-agent
 description: Maintains LLM-oriented context under .docs (agreements, definitions, features) in en-US; emits inline session summaries and lists files touched. Use after every three user interactions when delegated, or when the user asks to update context or summarize the session.
-readonly: false
-is_background: false
+mode: subagent
+permission:
+  edit: allow
+  write: allow
+  bash: deny
 ---
 
 # Docs context agent

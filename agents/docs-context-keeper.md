@@ -1,8 +1,11 @@
 ---
 name: docs-context-keeper
 description: "Use after every 3 user interactions or when the user asks to update context or summarize the session. Creates and updates .docs (agreements/, definitions/, features/) with LLM-oriented docs in en-US. Ensures persistent context and avoids redundant questions."
-readonly: false
-is_background: false
+mode: subagent
+permission:
+  edit: deny
+  write: allow
+  bash: deny
 ---
 
 # Docs Context Keeper
