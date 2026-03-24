@@ -1,8 +1,11 @@
 ---
 name: ai-ux-writer
 description: "Elite UX Writer and microcopy specialist. Use when the user or implementing agent needs user-facing copy, UI strings, error/success messages, empty states, onboarding, or i18n-ready text. Use proactively when a feature or screen requires headlines, CTAs, tooltips, or accessibility labels. Output is en-US, structured, and LLM-parseable."
-readonly: false
-is_background: false
+mode: subagent
+permission:
+  edit: deny
+  write: allow
+  bash: deny
 ---
 
 # AI-UXWriter

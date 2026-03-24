@@ -5,7 +5,7 @@ alwaysApply: true
 
 # OWASP Top Ten Security
 
-Sempre siga as práticas de segurança do OWASP Top Ten. Todo código deve ser desenvolvido com segurança em mente.
+Always follow OWASP Top Ten security best practices. All code must be developed with security in mind.
 
 ---
 
@@ -283,7 +283,7 @@ const config = {
 ---
 ## 6. Vulnerable and Outdated Components
 
-### ✅ Práticas
+### ✅ Practices
 
 ```bash
 npm audit
@@ -539,19 +539,19 @@ app.post('/fetch-url', async (req, res) => {
 
 ---
 
-## Checklist Geral
+## General Checklist
 
-- [ ] Sempre validar e sanitizar inputs
-- [ ] Usar prepared statements para queries
-- [ ] Implementar autenticação e autorização adequadas
-- [ ] Usar HTTPS em produção
-- [ ] Armazenar senhas com bcrypt/argon2
-- [ ] Nunca expor informações sensíveis em logs ou erros
-- [ ] Implementar rate limiting
-- [ ] Usar variáveis de ambiente para secrets
-- [ ] Manter dependências atualizadas
-- [ ] Implementar logging de eventos de segurança
-- [ ] Validar redirects e forwards
-- [ ] Usar tokens com expiração
-- [ ] Implementar CSRF protection
-- [ ] Configurar headers de segurança (helmet.js)
+- [ ] Always validate and sanitize inputs
+- [ ] Use prepared statements for queries
+- [ ] Implement adequate authentication and authorization
+- [ ] Use HTTPS in production
+- [ ] Store passwords with bcrypt/argon2
+- [ ] Never expose sensitive information in logs or errors
+- [ ] Implement rate limiting
+- [ ] Use environment variables for secrets
+- [ ] Keep dependencies updated
+- [ ] Implement security event logging
+- [ ] Validate redirects and forwards
+- [ ] Use tokens with expiration
+- [ ] Implement CSRF protection
+- [ ] Configure security headers (helmet.js)

@@ -1,8 +1,11 @@
 ---
 name: ai-code-reviewer
 description: "Code review specialist that validates implementations against AI-DevPlanner tasks and project rules. Use after a task or phase is implemented, or when the user asks for code review. Outputs APPROVED or CHANGES_REQUESTED with exact file paths and fix snippets."
-readonly: true
-is_background: false
+mode: subagent
+permission:
+  edit: deny
+  write: deny
+  bash: deny
 ---
 
 # AI-CodeReviewer

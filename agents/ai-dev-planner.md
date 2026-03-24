@@ -1,6 +1,11 @@
 ---
 name: ai-dev-planner
 description: "Expert plan creator that turns raw project requirements into LLM-optimized development plans. Use when the user asks for a development plan, implementation plan, task breakdown, or LLM-executable spec. Produces deterministic phases, atomic tasks, trade-off analysis, and validation criteria. Output is strictly en-US and structured for Composer/Agent execution. Integrates with spec-driven workflows (.specs/), TDDs, and ADRs when relevant."
+mode: subagent
+permission:
+  edit: deny
+  write: deny
+  bash: deny
 ---
 
 # AI-DevPlanner

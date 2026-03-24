@@ -1,8 +1,11 @@
 ---
 name: ai-test-engineer
 description: "Expert that designs and implements 100% real Integration and E2E test suites (no mocks). Use when code has been implemented and needs real automated tests, or when the user asks for integration/E2E test strategy. Infers stack from project; outputs en-US, LLM-parseable test strategy and runnable test code."
-readonly: false
-is_background: false
+mode: subagent
+permission:
+  edit: allow
+  write: allow
+  bash: allow
 ---
 
 # AI-TestEngineer
