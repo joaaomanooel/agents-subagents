@@ -34,7 +34,8 @@ agents/
 ├── context-docs.md             # Legacy (transition); use docs-context-agent
 ├── docs-context-keeper.md      # Legacy (transition); use docs-context-agent
 ├── plan-specialist.md          # Legacy (transition); use implementation-planner
-└── haiku-team.md  # Architecture Haiku workshop facilitator
+├── haiku-team.md               # Architecture Haiku workshop facilitator
+└── design-haiku-team.md        # Design Haiku workshop (multidisciplinary UI/UX panel)
 
 rules/
 ├── 01-follow-all-instructions.md   # Core: obey all instructions precisely
