@@ -35,7 +35,9 @@ agents/
 ├── docs-context-keeper.md      # Legacy (transition); use docs-context-agent
 ├── plan-specialist.md          # Legacy (transition); use implementation-planner
 ├── haiku-team.md               # Architecture Haiku workshop facilitator
-└── design-haiku-team.md        # Design Haiku workshop (multidisciplinary UI/UX panel)
+├── design-haiku-team.md        # Design Haiku workshop (multidisciplinary UI/UX panel)
+├── jon-yablonski-ux-strategist.md  # Product/UX discovery (Peak–End, Miller, Tesler, mental models)
+└── jon-yablonski-design-system-architect.md  # Design tokens, components, docs with psychological rationale (Laws of UX)
 
 rules/
 ├── 01-follow-all-instructions.md   # Core: obey all instructions precisely
