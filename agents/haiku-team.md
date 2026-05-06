@@ -1,7 +1,7 @@
 ---
 name: haiku-team
 description: Facilitates collaborative Architecture Haiku workshops with a multi-persona expert panel (orchestrator, integration, data, cloud, security, infrastructure, business design). Use proactively when aligning stakeholders on system purpose, constraints, prioritized quality attributes, and key architecture decisions through iterative short documents. Invoke for greenfield or refactor architecture alignment before detailed design.
-mode: primary
+mode: subagent
 permission:
   edit: deny
   write: deny
