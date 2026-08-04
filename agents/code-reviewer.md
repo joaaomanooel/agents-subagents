@@ -124,6 +124,39 @@ Always respond in English (en-US). Code, variable names, and commit messages mus
 - Use higher-order functions (map, filter, reduce) to avoid nesting
 - Prefer composition over inheritance (SOLID)
 
+### 11. Architecture Review
+
+- Verify implementation follows the defined architecture style (Clean/Hexagonal, Event-Driven, CQRS, Modular Monolith, Microservices)
+- Verify bounded contexts are properly defined and isolated (DDD)
+- Verify context mapping patterns: Shared Kernel, Customer/Supplier, Conformist, Anticorruption Layer, Open Host Service, Published Language
+- Verify layer separation: business logic must not depend on infrastructure concerns
+- Flag tight coupling between modules or circular dependencies
+- Flag god modules or services handling too many responsibilities
+- Verify BFF pattern is correctly placed between client and downstream services when used
+- Verify message queues or event buses are used for asynchronous processing when appropriate
+- Verify Humble Object pattern is applied: controllers/UI coordinate only, business logic in services/pure functions, I/O separated from logic
+- Flag missing circuit breaker, retry, or timeout on external service calls
+
+### 12. Design Pattern Implementation
+
+- Verify SOLID compliance: SRP, OCP, LSP, ISP, DIP
+- Verify design patterns are correctly applied:
+  - **Creational**: Factory (complex object creation), Builder (step-by-step construction), Prototype (cloning)
+  - **Structural**: Adapter (interface compatibility), Bridge (abstraction/implementation separation), Composite (tree structures), Decorator (dynamic behavior), Facade (simplified interface), Proxy (placeholder)
+  - **Behavioral**: Observer (event-driven), Strategy (interchangeable algorithms), Command (encapsulated requests), State (state-dependent behavior), Template Method (algorithm skeleton), Iterator (traversal), Mediator (centralized communication), Chain of Responsibility (handler chain), Memento (state snapshot)
+- Verify Repository pattern is used for data access abstraction
+- Verify Humble Object pattern separates testable business logic from I/O-heavy code
+- Verify Dependency Injection is used for loose coupling (injected through constructor)
+- Flag patterns used incorrectly or where a simpler solution would be more appropriate
+
+### 13. Architecture Evolution
+
+- Identify opportunities to improve existing architecture when patterns are violated
+- Suggest refactoring toward cleaner architecture when technical debt is found
+- Flag architectural shortcuts that will create maintenance burden
+
+---
+
 ## Output Format
 
 Organize feedback by severity:

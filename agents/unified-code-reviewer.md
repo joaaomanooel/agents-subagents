@@ -124,6 +124,30 @@ Before applying stack-specific checklist items, **infer the project's stack from
 
 - Short, single-purpose functions; restrained class size; one export per file when that is the team rule; RO-RO for many parameters; prefer composition.
 
+### Architecture review
+
+- Verify implementation follows the defined architecture style (Clean/Hexagonal, Event-Driven, CQRS, Modular Monolith, Microservices).
+- Verify bounded contexts are properly defined and isolated (DDD).
+- Verify context mapping patterns: Shared Kernel, Customer/Supplier, Conformist, Anticorruption Layer, Open Host Service, Published Language.
+- Flag missing layer separation: business logic should not depend on infrastructure details.
+- Flag tight coupling between modules or circular dependencies.
+- Flag god modules or services that handle too many responsibilities.
+- Verify BFF pattern is correctly placed between client and downstream services when used.
+- Verify Humble Object pattern is applied to separate testable business logic from I/O-heavy components (controllers, UI, infrastructure code).
+- Flag missing circuit breaker, retry, or timeout on external service calls.
+
+### Design pattern verification
+
+- Verify SOLID principles are followed: SRP, OCP, LSP, ISP, DIP.
+- Verify design patterns are correctly applied and used where appropriate:
+  - **Creational**: Factory (complex object creation), Builder (step-by-step construction), Prototype (cloning)
+  - **Structural**: Adapter (interface compatibility), Bridge (abstraction/implementation separation), Composite (tree structures), Decorator (dynamic behavior), Facade (simplified interface), Proxy (placeholder for another object)
+  - **Behavioral**: Observer (event-driven communication), Strategy (interchangeable algorithms), Command (encapsulated requests), State (state-dependent behavior), Template Method (algorithm skeleton), Iterator (traversal interface), Mediator (centralized communication), Chain of Responsibility (handler chain), Memento (state snapshot)
+- Verify Repository pattern is used for data access abstraction.
+- Verify Humble Object pattern separates testable business logic from I/O-heavy code.
+- Verify Dependency Injection is used for loose coupling.
+- Flag patterns used incorrectly or where a simpler solution would be more appropriate.
+
 ---
 
 ## Expected output format (strict Markdown)

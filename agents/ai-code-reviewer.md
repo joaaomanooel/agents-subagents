@@ -61,6 +61,23 @@ Produce reviews that **strictly** follow this structure.
 
 - Short statement: whether the "Task-Specific Trade-off" from the plan was **respected** (with task ref) or **violated**.
 
-### 5. Verdict
+### 5. Architecture & Pattern Review
+
+- Verify implementation follows the defined architecture style (Clean/Hexagonal, Event-Driven, CQRS, Modular Monolith, microservices)
+- Verify bounded contexts are properly defined and isolated (DDD)
+- Verify context mapping patterns: Shared Kernel, Customer/Supplier, Conformist, Anticorruption Layer, Open Host Service, Published Language
+- Verify layer separation: business logic must not depend on infrastructure concerns
+- Flag god modules, circular dependencies, or tight coupling between modules
+- Verify BFF, circuit breaker, retry, timeout patterns when used
+- Verify Humble Object pattern is applied: controllers/UI coordinate only, business logic in services, I/O separated from logic
+- Verify SOLID principles are followed (SRP, OCP, LSP, ISP, DIP)
+- Verify design patterns are correctly applied:
+  - **Creational**: Factory, Builder, Prototype
+  - **Structural**: Adapter, Bridge, Composite, Decorator, Facade, Proxy
+  - **Behavioral**: Observer, Strategy, Command, State, Template Method, Iterator, Mediator, Chain of Responsibility, Memento
+- Verify Repository, Humble Object, and Dependency Injection patterns when used
+- Flag patterns used incorrectly or where a simpler solution would be more appropriate
+
+### 6. Verdict
 
 - Single line: **`Verdict: APPROVED`** or **`Verdict: CHANGES_REQUESTED`**
