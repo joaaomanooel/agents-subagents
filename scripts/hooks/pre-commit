@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Pre-commit hook — runs quality gates before commit is allowed.
+# Install: `git config core.hooksPath scripts/hooks`
+set -euo pipefail
+
+ROOT="$(git rev-parse --show-toplevel)"
+
+echo "[pre-commit] running sync-drift check..."
+node "$ROOT/scripts/sync-agents.mjs" --check
+
+echo "[pre-commit] running quality gates..."
+node -e "
+import('$ROOT/scripts/quality-gates/orchestrator.mjs')
+  .then(async ({ runQualityGate, formatGateReport }) => {
+    const result = await runQualityGate('.', { complexityThreshold: 12 });
+    process.stdout.write(formatGateReport(result) + '\n');
+    process.exit(result.ok ? 0 : 1);
+  })
+  .catch((err) => { console.error(err); process.exit(1); });
+"
