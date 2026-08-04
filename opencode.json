@@ -6,14 +6,15 @@
   },
   "autoupdate": true,
   "instructions": [
-    ".cursor/rules/*.md",
-    ".config/opencode/rules/*.md"
+    "rules/*.md",
+    "CLAUDE.md"
   ],
   "watcher": {
     "ignore": [
       "node_modules/**",
       "dist/**",
-      ".git/**"
+      ".git/**",
+      "**/.DS_Store"
     ]
   },
   "mcp": {
