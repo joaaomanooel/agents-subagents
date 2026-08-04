@@ -1,6 +1,6 @@
 # AGENTS.md
 
-This repository contains AI agent definitions used by opencode and similar tools.
+This repository contains AI agent definitions used by opencode and Claude Code.
 
 ## Preferred agents (pilot)
 
@@ -8,12 +8,14 @@ For new flows, prefer **implementation-planner**, **unified-code-reviewer**, and
 
 ## Frontmatter: do not use `model`
 
-Do **not** add a `model` key (e.g. `model: fast`) to agent frontmatter. Tooling selects models outside these files; keeping frontmatter free of `model` avoids drift and duplicate sources of truth.
+Do **not** add a `model` key (e.g. `model: opus`) to agent frontmatter. Tooling selects models outside these files; keeping frontmatter free of `model` avoids drift and duplicate sources of truth. The quality gate `forbidden-fields` enforces this on every commit.
 
 ## Table of Contents
 
 - [Repository Structure](#repository-structure)
-- [Build, Lint, and Test Commands](#build-lint-and-test-commands)
+- [Agent Frontmatter Schema](#agent-frontmatter-schema)
+- [Dual-Platform Sync Workflow](#dual-platform-sync-workflow)
+- [Build and Test Commands](#build-and-test-commands)
 - [Code Style Guidelines](#code-style-guidelines)
 - [Cursor/Co-pilot Rules](#cursurcopilot-rules)
 - [Framework-Specific Guidelines](#framework-specific-guidelines)
@@ -21,40 +23,121 @@ Do **not** add a `model` key (e.g. `model: fast`) to agent frontmatter. Tooling 
 ## Repository Structure
 
 ```text
-agents/
-├── implementation-planner.md   # Preferred: LLM-optimized implementation plans (en-US)
-├── unified-code-reviewer.md    # Preferred: plan-aware + deep checklist review (en-US)
-├── docs-context-agent.md       # Preferred: .docs maintenance + session summaries (en-US)
-├── ai-code-reviewer.md         # Legacy (transition); use unified-code-reviewer
-├── ai-dev-planner.md           # Legacy (transition); use implementation-planner
-├── ai-test-engineer.md         # Integration/E2E test strategy agent
-├── ai-ux-writer.md             # UX writing agent
-├── pencil-specialist.md  # Pencil MCP, UI/UX, color tokens, shadcn/Tailwind design-to-code (en-US)
-├── code-reviewer.md            # Legacy (transition); use unified-code-reviewer
-├── context-docs.md             # Legacy (transition); use docs-context-agent
-├── docs-context-keeper.md      # Legacy (transition); use docs-context-agent
-├── plan-specialist.md          # Legacy (transition); use implementation-planner
-├── haiku-team.md               # Architecture Haiku workshop facilitator
-├── design-haiku-team.md        # Design Haiku workshop (multidisciplinary UI/UX panel)
-├── jon-yablonski-ux-strategist.md  # Product/UX discovery (Peak–End, Miller, Tesler, mental models)
-└── jon-yablonski-design-system-architect.md  # Design tokens, components, docs with psychological rationale (Laws of UX)
+agents/                              Canonical agents (manual edits)
+├── implementation-planner.md
+├── unified-code-reviewer.md
+├── docs-context-agent.md
+├── ai-code-reviewer.md             # legacy
+├── senior-*.md                    # full-bash capability
+├── staff-orchestrator.md          # full-bash capability
+└── ...  (30 agents total)
 
-rules/
-├── 01-follow-all-instructions.md   # Core: obey all instructions precisely
-├── 02-real-environment-execute-commands.md  # Execute commands yourself
-├── 08-javascript-advanced-features.md
-├── 09-performance-big-o-balanced.md
-├── 13-owasp-top-ten.md
-├── 24-typescript-best-practices.md
-├── 25-clean-code-guidelines.md
-└── ... (37 total rules)
+.opencode/agents/                   Generated (opencode format, committed)
+.claude/agents/                     Generated (Claude Code format, committed)
+
+rules/                              Behavior and quality rules (37 files)
+skills/                             Project-local skills (test-engineer-js, etc.)
+docs/
+├── superpowers/specs/             Specs for past work
+├── superpowers/plans/             Implementation plans
+├── agents-platforms.md            Extension guide for adding platforms
+└── ...
+
+scripts/
+├── sync-agents.mjs                 CLI entry: sync, check, diff, audit, list, watch, prune
+├── sync-agents-fallback.sh         POSIX shell fallback (no node required)
+├── sync-agents/                    Sync tool internals
+│   ├── index.mjs                   public API
+│   ├── __tests__/                  orchestrator tests
+│   └── lib/
+│       ├── core/                   Result, IO, CLI, Errors
+│       ├── parser/                 Frontmatter parsing + name inference
+│       ├── validator/              Chain of Responsibility validators
+│       ├── platform/               Strategy pattern (opencode, claude)
+│       └── orchestrator/           sync, watch, prune, interactive
+├── quality-gates/                  Quality gate suite
+│   ├── orchestrator.mjs           runs all gates
+│   ├── {secrets,big-o,complexity,forbidden-fields}.mjs
+│   └── __tests__/                  tests mirrored by gate
+├── hooks/pre-commit                Quality gate before commit
+└── README.md
+
+.opencode/                         opencode package.json + node_modules
+.cursor/agents/                    Cursor-specific agent overrides (if any)
+.github/workflows/quality-gates.yml   CI: sync drift + tests
 ```
 
-## Build, Lint, and Test Commands
+## Agent Frontmatter Schema
 
-This is a **markdown-only repository** containing agent definition files. No build, lint, or test commands exist.
+Required:
 
-**Working with this repository**: Edit markdown files directly. Agent definitions follow YAML frontmatter.
+- `name` — kebab-case, unique, must match filename without `.md`
+- `description` — verb-leading sentence; ≥ 80 chars recommended; can be a single line, a `>-` folded block, or a `|` literal block
+
+Optional (validated by `ValidatorChain`):
+
+- `mode` — `primary`, `subagent`, or `all`. Default inferred from name.
+- `capability` — `read-only`, `code-edit`, or `full-bash`. Default inferred from name pattern.
+- `mcp` — array of MCP server names configured in `opencode.json`.
+- `skills` — array of skill names available in `skills/`.
+- `model_preference` — `opus`, `sonnet`, `haiku`, or `inherit`. Translated per-platform during emit.
+- `color` — hex string (opencode) or named token (claudecode).
+
+**Forbidden in frontmatter** (enforced by quality gate):
+
+- `model` — runtime tooling selects, not metadata
+- `maxSteps` — runtime concern
+
+### Capability inference by name
+
+| Pattern contains        | Inferred capability |
+| ----------------------- | ------------------- |
+| `senior-` or `staff-`   | `full-bash`         |
+| `orchestrator`          | `full-bash`         |
+| `review`, `audit`, `analy[sz]e`, `analys[ti]`, `plan`, `architect`, `design` | `read-only` |
+| `test`, `e2e`, `playwright` | `code-edit`    |
+| other                    | `code-edit`         |
+
+## Dual-Platform Sync Workflow
+
+Editing one agent in `agents/` triggers a sync that emits both `.opencode/agents/<name>.md` and `.claude/agents/<name>.md`. The sync tool respects Strategy + Registry — opencode and claude are independent platforms registered at runtime.
+
+### Commands
+
+| Command                              | Purpose                                    |
+| ------------------------------------ | ------------------------------------------ |
+| `node scripts/sync-agents.mjs`       | Sync everything                            |
+| `node scripts/sync-agents.mjs --check` | CI: exit 1 on drift                       |
+| `node scripts/sync-agents.mjs --diff`  | Show unified diff                          |
+| `node scripts/sync-agents.mjs --audit` | List resolved vs declared configs          |
+| `node scripts/sync-agents.mjs --list`  | Compact table of all agents               |
+| `node scripts/sync-agents.mjs --agent=foo` | Sync a single agent                    |
+| `node scripts/sync-agents.mjs --prune` | Remove orphan generated files              |
+| `node scripts/sync-agents.mjs --watch` | Re-sync on file changes (debounced)       |
+| `node scripts/sync-agents.mjs --interactive` | Confirm per agent, edit, skip       |
+| `node scripts/sync-agents.mjs --dry-run` | Show what would change without writing |
+| `./scripts/sync-agents-fallback.sh`  | POSIX-only copy fallback (no node)         |
+
+### Pre-commit + CI
+
+- Pre-commit: `scripts/hooks/pre-commit` runs `sync --check` then the quality gate suite.
+- CI: `.github/workflows/quality-gates.yml` runs sync drift + tests on Ubuntu, macOS, Windows.
+- Enable pre-commit via `git config core.hooksPath scripts/hooks`.
+
+## Build and Test Commands
+
+This repository combines markdown with a Node-based sync tool:
+
+**Markdown agents**: no build, lint, or test commands.
+
+**Sync tool**:
+
+```bash
+node --test --experimental-test-coverage 'scripts/**/*.test.mjs'    # 159 tests, ≥ 90% coverage
+bash scripts/hooks/pre-commit                                      # full quality gate locally
+```
+
+No external dependencies required — Node 18+ stdlib only. Bun compatible.
 
 ---
 
@@ -63,21 +146,15 @@ This is a **markdown-only repository** containing agent definition files. No bui
 ### File Organization
 
 - One agent definition per markdown file
-- YAML frontmatter required fields:
-  ```yaml
-  ---
-  name: agent-name        # kebab-case identifier
-  description: "Description of when to use this agent"
-  ---
-  ```
-- Optional: `readonly`, `is_background`
-- Do **not** add `model` in agent frontmatter (see above)
+- YAML frontmatter required fields: `name`, `description`
+- Optional: `mode`, `capability`, `mcp`, `skills`, `model_preference`, `color`
+- Forbidden: `model`, `maxSteps`
 
 ### Naming Conventions
 
-- Agent names: **kebab-case** (e.g., `plan-specialist`, `ai-test-engineer`)
+- Agent names: **kebab-case** (e.g., `plan-specialist`, `senior-frontend-developer`)
 - File names: Match agent name with `.md` extension
-- Descriptions: One sentence, start with verb ("Expert that...", "Use when...")
+- Descriptions: One sentence, start with verb ("Use this agent when...", "Reviews...", "Implements...")
 
 ### Markdown Formatting
 
@@ -85,14 +162,6 @@ This is a **markdown-only repository** containing agent definition files. No bui
 - Code blocks with language identifier (```typescript, ```bash)
 - Tables for structured data, lists for checklists
 - Horizontal rules (`---`) for section separation
-
-### Content Structure
-
-1. **Frontmatter** — YAML block with metadata
-2. **Role definition** — "You are..." statement
-3. **Guidelines** — Numbered or bulleted constraints
-4. **Expected output format** — Detailed structure for agent responses
-5. **Invocation** — When and how to invoke the agent
 
 ### Core Coding Principles
 
