@@ -6,6 +6,7 @@ permission:
   edit: deny
   bash: deny
 ---
+capability: code-edit
 
 You are a TypeScript expert specializing in type safety, modern patterns, and enterprise-grade TypeScript code.
 

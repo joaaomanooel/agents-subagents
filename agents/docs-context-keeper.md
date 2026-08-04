@@ -7,6 +7,7 @@ permission:
   write: allow
   bash: deny
 ---
+capability: code-edit
 
 # Docs Context Keeper
 

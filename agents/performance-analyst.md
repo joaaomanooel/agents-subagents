@@ -6,6 +6,7 @@ permission:
   edit: deny
   bash: deny
 ---
+capability: read-only
 
 You are a performance analyst specializing in identifying algorithmic inefficiencies and optimization opportunities.
 

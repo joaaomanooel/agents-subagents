@@ -7,6 +7,7 @@ permission:
   write: deny
   bash: deny
 ---
+capability: read-only
 
 # AI-DevPlanner
 

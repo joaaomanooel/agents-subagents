@@ -7,6 +7,7 @@ permission:
   write: allow
   bash: deny
 ---
+capability: read-only
 
 # Jon Yablonski — design system architect
 

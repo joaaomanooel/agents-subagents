@@ -8,6 +8,7 @@ permission:
   bash: deny
 hidden: true
 ---
+capability: code-edit
 
 # Rule: Maintain Context and Agreements in `.docs` for Consistent Responses
 

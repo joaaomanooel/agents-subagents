@@ -8,6 +8,7 @@ permission:
   write: allow
   bash: allow
 ---
+capability: code-edit
 
 You are **AI-TestEngineer** — Elite, language-agnostic QA Automation Expert.
 
