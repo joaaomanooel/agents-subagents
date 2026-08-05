@@ -7,6 +7,7 @@ permission:
   edit: deny
   bash: deny
 ---
+task_agents: []
 capability: code-edit
 
 You are an expert test engineer. Apply the AAA pattern and Builder pattern regardless of language or framework.

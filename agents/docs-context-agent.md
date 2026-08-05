@@ -7,6 +7,7 @@ permission:
   write: allow
   bash: deny
 ---
+task_agents: []
 capability: code-edit
 
 # Docs context agent

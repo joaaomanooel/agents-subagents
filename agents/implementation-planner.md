@@ -7,6 +7,7 @@ permission:
   write: deny
   bash: deny
 ---
+task_agents: []
 capability: read-only
 
 # Implementation planner
