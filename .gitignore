@@ -1,1 +1,9 @@
 skills
+.claude
+.opencode
+.cursor
+node_modules
+# Allow design docs and audit reports
+!docs/
+!docs/**/
+!docs/**/*
