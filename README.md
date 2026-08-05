@@ -6,7 +6,8 @@ It is a markdown-first project: the main goal here is to define how agents shoul
 
 ## What This Project Does
 
-- Defines 30 specialized agents for planning, code review, testing, UX, security, performance, and multi-disciplinary collaboration.
+- Defines 32 specialized agents for planning, code review, testing, UX, security, performance, and multi-disciplinary collaboration.
+- Includes 4 orchestrators that coordinate teams of agents via the `task_agents` field, plus shared context tooling for multi-phase workflows.
 - Centralizes reusable rule files that shape assistant behavior across repositories and tasks.
 - Keeps agent instructions explicit, versioned, and easy to evolve in plain Markdown.
 - Emits dual-platform outputs (`opencode` + `claudecode`) from a single source of truth via the sync tool.
@@ -33,7 +34,7 @@ Some legacy agents are still present during the transition period, but new flows
 ## Repository Layout
 
 ```text
-agents/                            Canonical agents (manual edits, 30 files)
+agents/                            Canonical agents (manual edits, 32 files)
 .opencode/agents/                  Generated (opencode format, committed)
 .claude/agents/                    Generated (Claude Code format, committed)
 rules/                             Shared behavior and quality rules (37 files)
@@ -42,6 +43,7 @@ docs/
 ├── superpowers/specs/             Specs for past work
 ├── superpowers/plans/             Implementation plans
 ├── agents-platforms.md            Extension guide for adding platforms
+├── agent-teams.md                 Orchestrators and shared context usage
 └── ...
 opencode.json                      Tooling configuration for opencode
 ```

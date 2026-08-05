@@ -82,6 +82,7 @@ Optional (validated by `ValidatorChain`):
 - `skills` — array of skill names available in `skills/`.
 - `model_preference` — `opus`, `sonnet`, `haiku`, or `inherit`. Translated per-platform during emit.
 - `color` — hex string (opencode) or named token (claudecode).
+- `task_agents` — array of agent names this agent can invoke via Task/Agent tool. Maps to `permission.task` (opencode) or `tools: Agent(...)` (claudecode). Validator warns on unknown names.
 
 **Forbidden in frontmatter** (enforced by quality gate):
 

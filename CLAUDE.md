@@ -11,11 +11,12 @@ This repository stores AI agent definitions and shared rule files used by openco
 
 ## Conventions
 
-- Agent definitions are Markdown with YAML frontmatter. Required fields: `name`, `description`. Optional fields: `mode`, `capability`, `mcp`, `skills`, `model_preference`, `color`.
+- Agent definitions are Markdown with YAML frontmatter. Required fields: `name`, `description`. Optional fields: `mode`, `capability`, `mcp`, `skills`, `model_preference`, `color`, `task_agents`.
 - `model:` and `maxSteps:` are forbidden in frontmatter (runtime tooling selects).
 - Description should start with a verb or role descriptor (e.g. "Use this agent when...", "Reviews code for...", "X specialist that...").
 - Capability levels: `read-only` (auditors, reviewers, planners), `code-edit` (testers, writers), `full-bash` (senior-*, orchestrators).
 - Names are kebab-case.
+- Orchestrators declare `task_agents` listing which agents they can invoke; the sync tool emits platform-specific permissions. See `docs/agent-teams.md`.
 
 ## Tooling
 
@@ -25,7 +26,7 @@ This repository stores AI agent definitions and shared rule files used by openco
 - `node scripts/sync-agents.mjs --audit` — resolved configs vs declared
 - `node scripts/sync-agents.mjs --list` — compact table
 - `bash scripts/hooks/pre-commit` — pre-commit quality gate (sync + 5 gates)
-- `node --test 'scripts/**/*.test.mjs'` — 165 unit tests, 96.99% coverage
+- `node --test 'scripts/**/*.test.mjs'` — 184 unit tests, 96.99% coverage
 
 ## Quality gates
 
