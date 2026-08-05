@@ -1,11 +1,12 @@
 ---
 description: Expert that produces LLM-optimized implementation plans with phased structure, task breakdown, trade-offs, validation, review, refactoring, and .docs hooks. Use when the user asks for a development plan, execution plan, phased breakdown, or spec for agents to implement. Output is strictly en-US.
 mode: primary
-  permission:
-    edit: deny
-    bash: deny
+permission:
+  edit: deny
+  bash: deny
 ---
 
+task_agents: []
 capability: read-only
 
 # Implementation planner

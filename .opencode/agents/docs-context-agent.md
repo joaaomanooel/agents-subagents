@@ -1,10 +1,12 @@
 ---
 description: Maintains LLM-oriented context under .docs (agreements, definitions, features) in en-US; emits inline session summaries and lists files touched. Use after every three user interactions when delegated, or when the user asks to update context or summarize the session.
 mode: subagent
-  permission:
-    bash: ask
+permission:
+  edit: allow
+  bash: allow
 ---
 
+task_agents: []
 capability: code-edit
 
 # Docs context agent

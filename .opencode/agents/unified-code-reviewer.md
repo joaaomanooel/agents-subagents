@@ -1,11 +1,12 @@
 ---
 description: Code review specialist that validates implementations against the implementation plan, project rules, and engineering checklists. Use after a task or phase is implemented, before commits, or when reviewing pull requests. Outputs severities, actionable fixes, and a single verdict APPROVED or CHANGES_REQUESTED. All output in en-US.
 mode: subagent
-  permission:
-    edit: deny
-    bash: deny
+permission:
+  edit: deny
+  bash: deny
 ---
 
+task_agents: []
 capability: read-only
 
 # Unified code reviewer

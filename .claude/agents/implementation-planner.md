@@ -5,6 +5,7 @@ mode: primary
 tools: Read, Grep, Glob
 ---
 
+task_agents: []
 capability: read-only
 
 # Implementation planner

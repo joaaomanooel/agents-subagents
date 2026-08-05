@@ -4,6 +4,7 @@ description: Code review specialist that validates implementations against the i
 tools: Read, Grep, Glob
 ---
 
+task_agents: []
 capability: read-only
 
 # Unified code reviewer

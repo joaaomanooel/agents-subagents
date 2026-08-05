@@ -4,6 +4,7 @@ description: Pencil design, color systems, and UX microcopy specialist. Use when
 tools: Read, Grep, Glob, Bash, Edit, Write
 ---
 
+task_agents: []
 capability: code-edit
 
 # Pencil UI/UX specialist

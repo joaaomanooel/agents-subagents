@@ -4,6 +4,7 @@ description: Maintains LLM-oriented context under .docs (agreements, definitions
 tools: Read, Grep, Glob, Bash, Edit, Write
 ---
 
+task_agents: []
 capability: code-edit
 
 # Docs context agent

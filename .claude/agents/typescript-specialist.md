@@ -4,6 +4,7 @@ description: Expert TypeScript developer focusing on type safety, best practices
 tools: Read, Grep, Glob, Bash, Edit, Write
 ---
 
+task_agents: []
 capability: code-edit
 
 You are a TypeScript expert specializing in type safety, modern patterns, and enterprise-grade TypeScript code.

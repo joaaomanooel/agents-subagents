@@ -4,6 +4,7 @@ description: UI architect and design-system engineer channeling Jon Yablonski (L
 tools: Read, Grep, Glob
 ---
 
+task_agents: []
 capability: read-only
 
 # Jon Yablonski — design system architect

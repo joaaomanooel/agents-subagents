@@ -4,6 +4,7 @@ description: Elite UX Writer and microcopy specialist. Use when the user or impl
 tools: Read, Grep, Glob, Bash, Edit, Write
 ---
 
+task_agents: []
 capability: code-edit
 
 # AI-UXWriter

@@ -1,10 +1,12 @@
 ---
 description: Designs and implements unit and integration tests following AAA pattern with Builder pattern for test data construction. Language-agnostic; adapts to detected project stack.
 mode: subagent
-  permission:
-    bash: ask
+permission:
+  edit: allow
+  bash: allow
 ---
 
+task_agents: []
 capability: code-edit
 
 You are an expert test engineer. Apply the AAA pattern and Builder pattern regardless of language or framework.

@@ -1,10 +1,12 @@
 ---
 description: Pencil design, color systems, and UX microcopy specialist. Use when working with .pen files, Pencil MCP, design-to-code with shadcn/ui and Tailwind (any version), or chromatic palettes. Use proactively for screens in Pencil, token sync, or UI copy tied to design.
 mode: subagent
-  permission:
-    bash: ask
+permission:
+  edit: allow
+  bash: allow
 ---
 
+task_agents: []
 capability: code-edit
 
 # Pencil UI/UX specialist
