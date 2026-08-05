@@ -74,12 +74,17 @@ async function main() {
   }
 
   if (cli.mode === 'audit') {
-    const rows = auditAgents({ root });
-    process.stdout.write('NAME                            MODE       MODE-SOURCE                  CAPABILITY   CAPABILITY-SOURCE\n');
+    const { rows, unknown } = auditAgents({ root });
+    process.stdout.write('NAME                            MODE       CAPABILITY  TASK-AGENTS\n');
     for (const r of rows) {
+      const ta = r.taskAgents.length === 0 ? '-' : `${r.taskAgents.length} agent(s)`;
       process.stdout.write(
-        `${r.name.padEnd(30)}  ${r.mode.padEnd(9)}  ${r.modeSource.padEnd(26)}  ${r.capability.padEnd(10)}  ${r.capabilitySource}\n`,
+        `${r.name.padEnd(30)}  ${r.mode.padEnd(9)}  ${r.capability.padEnd(10)}  ${ta}\n`,
       );
+    }
+    if (unknown.length > 0) {
+      process.stdout.write(`\nUNRESOLVED TASK-AGENTS: ${unknown.join(', ')}\n`);
+      process.exit(exitCodes.ERROR);
     }
     process.exit(exitCodes.OK);
   }

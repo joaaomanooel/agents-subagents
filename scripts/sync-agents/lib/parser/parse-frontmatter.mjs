@@ -96,6 +96,12 @@ function parseYamlBlock(raw) {
       continue;
     }
 
+    if (value.startsWith('[') && value.endsWith(']')) {
+      const inner = value.slice(1, -1).trim();
+      data[key] = inner === '' ? [] : inner.split(',').map((s) => s.trim().replace(/^["']|["']$/g, ''));
+      continue;
+    }
+
     if (key === 'description' && value.startsWith('"') && !value.endsWith('"')) {
       currentBlockKey = key;
       currentBlockLines = [value.slice(1)];

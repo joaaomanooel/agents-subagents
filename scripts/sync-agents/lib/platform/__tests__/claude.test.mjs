@@ -69,3 +69,26 @@ test('mapCapability returns tools string', () => {
   assert.equal(p.mapCapability('code-edit'), 'Read, Grep, Glob, Bash, Edit, Write');
   assert.equal(p.mapCapability('full-bash'), 'Read, Grep, Glob, Bash, Edit, Write, NotebookEdit, WebFetch, WebSearch, TodoWrite, Skill');
 });
+
+test('emits Agent(...) wrapper when task_agents present', () => {
+  const out = emitClaude({
+    ...claudeCanonical,
+    capability: 'full-bash',
+    task_agents: ['alpha', 'beta'],
+  }, 'body');
+  assert.match(out, /Agent\(alpha, beta\)/);
+});
+
+test('emits tools without Agent wrapper when task_agents empty', () => {
+  const out = emitClaude({
+    ...claudeCanonical,
+    task_agents: [],
+  }, 'body');
+  assert.match(out, /^tools: Read, Grep, Glob$/m);
+  assert.doesNotMatch(out, /Agent\(/);
+});
+
+test('emits tools without Agent wrapper when task_agents absent', () => {
+  const out = emitClaude(claudeCanonical, 'body');
+  assert.doesNotMatch(out, /Agent\(/);
+});

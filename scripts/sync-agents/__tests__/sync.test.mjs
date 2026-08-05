@@ -101,7 +101,7 @@ mode: subagent
 body.`);
 
   try {
-    const rows = auditAgents({ root });
+    const { rows } = auditAgents({ root });
     assert.equal(rows.length, 1);
     assert.equal(rows[0].capability, 'code-edit');
     assert.match(rows[0].capabilitySource, /inferred/);

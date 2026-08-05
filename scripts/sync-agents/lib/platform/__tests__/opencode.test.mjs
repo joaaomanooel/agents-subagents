@@ -27,13 +27,16 @@ test('emits read-only capability as permission deny', () => {
   assert.match(out, /bash: deny/);
 });
 
-test('emits code-edit with bash ask', () => {
+test('emits code-edit with bash and edit allow', () => {
   const out = emitOpencode({ ...baseCanonical, capability: 'code-edit' }, 'body');
-  assert.match(out, /bash: ask/);
+  assert.match(out, /edit: allow/);
+  assert.match(out, /bash: allow/);
 });
 
-test('emits full-bash without deny permission', () => {
+test('emits full-bash with edit and bash allow', () => {
   const out = emitOpencode({ ...baseCanonical, capability: 'full-bash' }, 'body');
+  assert.match(out, /edit: allow/);
+  assert.match(out, /bash: allow/);
   assert.doesNotMatch(out, /edit: deny/);
 });
 
@@ -53,9 +56,63 @@ test('returns body in output', () => {
   assert.ok(out.endsWith('my prompt body'));
 });
 
-test('mapCapability returns correct YAML fragment', () => {
+test('emits permission block at column 0 (YAML top-level)', () => {
+  const out = emitOpencode(baseCanonical, 'body');
+  assert.match(out, /^permission:/m);
+  assert.doesNotMatch(out, /^  permission:/m);
+});
+
+test('emits task block with allow list at correct indentation', () => {
+  const out = emitOpencode({
+    ...baseCanonical,
+    capability: 'full-bash',
+    task_agents: ['alpha', 'beta'],
+  }, 'body');
+  assert.match(out, /^permission:/m);
+  assert.match(out, /^  task:/m);
+  assert.match(out, /^    "\*": "deny"/m);
+  assert.match(out, /^    "alpha": "allow"/m);
+  assert.match(out, /^    "beta": "allow"/m);
+});
+
+test('omits task block when task_agents is empty but emits capability permissions', () => {
+  const out = emitOpencode({
+    ...baseCanonical,
+    capability: 'full-bash',
+    task_agents: [],
+  }, 'body');
+  assert.match(out, /^permission:/m);
+  assert.doesNotMatch(out, /^  task:/m);
+});
+
+test('mapCapability returns array of permission lines', () => {
   const p = new OpencodePlatform();
-  assert.match(p.mapCapability('read-only'), /edit: deny/);
-  assert.match(p.mapCapability('code-edit'), /bash: ask/);
-  assert.equal(p.mapCapability('full-bash'), '');
+  assert.ok(Array.isArray(p.mapCapability('read-only')));
+  assert.ok(p.mapCapability('read-only').some((l) => /edit: deny/.test(l)));
+  assert.ok(p.mapCapability('code-edit').some((l) => /edit: allow/.test(l)));
+  assert.ok(p.mapCapability('full-bash').some((l) => /bash: allow/.test(l)));
+});
+
+test('emits permission.task from task_agents list', () => {
+  const out = emitOpencode({
+    ...baseCanonical,
+    capability: 'full-bash',
+    task_agents: ['alpha', 'beta'],
+  }, 'body');
+  assert.match(out, /permission:[\s\S]*task:[\s\S]*\*": "deny"/);
+  assert.match(out, /"alpha": "allow"/);
+  assert.match(out, /"beta": "allow"/);
+});
+
+test('omits task permission when task_agents is empty', () => {
+  const out = emitOpencode({
+    ...baseCanonical,
+    task_agents: [],
+  }, 'body');
+  assert.doesNotMatch(out, /\btask:/);
+});
+
+test('omits task permission when task_agents is absent', () => {
+  const out = emitOpencode(baseCanonical, 'body');
+  assert.doesNotMatch(out, /\btask:/);
 });

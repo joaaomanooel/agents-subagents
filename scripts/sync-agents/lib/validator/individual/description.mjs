@@ -1,5 +1,5 @@
 const VERBS = /^(Use|Expert|An?|Help|Helps|Reviews|Audits|Plans|Implements|Designs|Creates|Performs|Generates|Validates|Analyzes|Orchestrates|Coordinates|Facilitates|Embodies|Maintains|Inspects|Guides|Coaches)/;
-const ROLE_START = /^(?:[A-Z]?[A-Za-z][\w'-]*\s+)*(?:specialist|architect|strategist|reviewer|auditor|writer|facilitator|engineer|expert|agent|assistant|advisor|consultant|coordinator|operator|designer|lead|chief|principal|composer|developer)\b/;
+const ROLE_START = /^(?:[A-Z]?[A-Za-z][\w'-]*\s+)*(?:specialist|architect|strategist|reviewer|auditor|writer|facilitator|engineer|expert|agent|assistant|advisor|consultant|coordinator|operator|designer|lead|chief|principal|composer|developer|pilot)\b/;
 const USE_WHEN = /\bUse(?:\s+this)?\s+(?:agent\s+)?when\b/i;
 const MIN_DESCRIPTION_LENGTH = 80;
 

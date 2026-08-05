@@ -5,6 +5,7 @@ import { capabilityValidator } from './individual/capability.mjs';
 import { modeValidator } from './individual/mode.mjs';
 import { modelValidator } from './individual/model.mjs';
 import { arrayFieldsValidator } from './individual/arrays.mjs';
+import { taskAgentsValidator } from './individual/task-agents.mjs';
 
 export const validatorChain = new ValidatorChain()
   .add(nameValidator)
@@ -12,6 +13,7 @@ export const validatorChain = new ValidatorChain()
   .add(capabilityValidator)
   .add(modeValidator)
   .add(modelValidator)
-  .add(arrayFieldsValidator);
+  .add(arrayFieldsValidator)
+  .add(taskAgentsValidator);
 
 export { ValidatorChain };

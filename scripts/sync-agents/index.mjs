@@ -36,10 +36,12 @@ import { loadAndValidate } from './lib/parser/loader.mjs';
 import './lib/platform/opencode.mjs';
 import './lib/platform/claude.mjs';
 
-export async function syncAgents({ root, dryRun = false, checkOnly = false } = {}) {
+export async function syncAgents({ root, dryRun = false, checkOnly = false, prune = true } = {}) {
   const { canonicals, errors, warnings } = loadAndValidate(root);
   const drift = [];
   const platforms = listPlatforms();
+  const canonicalNames = new Set(canonicals.map((c) => c.name));
+  const { unlinkSync, readdirSync } = await import('node:fs');
 
   for (const c of canonicals) {
     for (const platform of platforms) {
@@ -53,6 +55,20 @@ export async function syncAgents({ root, dryRun = false, checkOnly = false } = {
         continue;
       }
       if (!dryRun) writeUtf8(target, out);
+    }
+  }
+
+  if (prune && !checkOnly && !dryRun) {
+    for (const platform of platforms) {
+      const dir = join(root, platform.outputDir);
+      if (!fileExists(dir)) continue;
+      for (const f of readdirSync(dir)) {
+        if (!f.endsWith('.md')) continue;
+        const stem = f.replace(/\.md$/, '');
+        if (!canonicalNames.has(stem)) {
+          unlinkSync(join(dir, f));
+        }
+      }
     }
   }
 
@@ -91,17 +107,30 @@ function declaredOrInferred(declaredKey, inferred) {
 export function auditAgents({ root }) {
   const { canonicals } = loadAndValidate(root);
   const rows = [];
+  const taskAgentsAccumulator = new Map();
   for (const c of canonicals) {
     const declared = parseFrontmatter(readFileSync(join(root, 'agents', `${c.name}.md`), 'utf8')).value.data;
+    const declaredTaskAgents = declared.task_agents ?? [];
+    for (const target of declaredTaskAgents) {
+      taskAgentsAccumulator.set(target, (taskAgentsAccumulator.get(target) ?? 0) + 1);
+    }
     rows.push({
       name: c.name,
       mode: c.canonical.mode,
       modeSource: declaredOrInferred(declared.mode, inferMode(c.name)),
       capability: c.canonical.capability,
       capabilitySource: declaredOrInferred(declared.capability, inferCapability(c.name)),
+      taskAgents: declaredTaskAgents,
+      taskAgentsCount: declaredTaskAgents.length,
     });
   }
-  return rows;
+
+  const referenced = new Set();
+  for (const r of rows) for (const t of r.taskAgents) referenced.add(t);
+  const existingNames = new Set(canonicals.map((c) => c.name));
+  const unknown = [...referenced].filter((name) => !existingNames.has(name));
+
+  return { rows, unknown };
 }
 
 export function listAgents({ root }) {

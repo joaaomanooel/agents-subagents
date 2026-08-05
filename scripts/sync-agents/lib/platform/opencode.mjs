@@ -1,11 +1,37 @@
 import { Platform } from './platform.mjs';
 import { registerPlatform, getPlatform } from './registry.mjs';
 
-const PERMISSIONS = {
-  'read-only': '  permission:\n    edit: deny\n    bash: deny',
-  'code-edit': '  permission:\n    bash: ask',
-  'full-bash': '',
+const CAPABILITY_PERMISSIONS = {
+  'read-only': ['edit: deny', 'bash: deny'],
+  'code-edit': ['edit: allow', 'bash: allow'],
+  'full-bash': ['edit: allow', 'bash: allow'],
 };
+
+function permissionBlock(canonical) {
+  const lines = [];
+  const capPerm = CAPABILITY_PERMISSIONS[canonical.capability ?? 'code-edit'];
+  const taskAgents = Array.isArray(canonical.task_agents) ? canonical.task_agents : [];
+
+  if (!capPerm && taskAgents.length === 0) return '';
+
+  lines.push('permission:');
+
+  if (capPerm) {
+    for (const line of capPerm) {
+      lines.push(`  ${line}`);
+    }
+  }
+
+  if (taskAgents.length > 0) {
+    lines.push('  task:');
+    lines.push('    "*": "deny"');
+    for (const name of taskAgents) {
+      lines.push(`    "${name}": "allow"`);
+    }
+  }
+
+  return lines.join('\n');
+}
 
 function yamlScalar(s) {
   if (typeof s !== 'string') return s;
@@ -22,19 +48,18 @@ export class OpencodePlatform extends Platform {
   describe() { return 'opencode (mode + permission keys)'; }
 
   mapCapability(capability) {
-    return PERMISSIONS[capability] ?? '';
+    return CAPABILITY_PERMISSIONS[capability] ?? [];
   }
 
   emit(canonical, body) {
     const mode = canonical.mode ?? 'subagent';
-    const capability = canonical.capability ?? 'code-edit';
-    const permissionBlock = this.mapCapability(capability);
+    const permBlock = permissionBlock(canonical);
 
     const lines = [];
     lines.push('---');
     lines.push(`description: ${yamlScalar(canonical.description ?? '')}`);
     lines.push(`mode: ${mode}`);
-    if (permissionBlock) lines.push(permissionBlock);
+    if (permBlock) lines.push(permBlock);
     if (canonical.color) {
       lines.push(`color: ${canonical.color.startsWith('#') ? `"${canonical.color}"` : canonical.color}`);
     }

@@ -33,6 +33,9 @@ export class ClaudePlatform extends Platform {
   emit(canonical, body) {
     const capability = canonical.capability ?? 'code-edit';
     const tools = this.mapCapability(capability);
+    const taskAgents = Array.isArray(canonical.task_agents) && canonical.task_agents.length > 0
+      ? `Agent(${canonical.task_agents.join(', ')}), `
+      : '';
     const lines = [];
 
     lines.push('---');
@@ -41,7 +44,7 @@ export class ClaudePlatform extends Platform {
 
     if (canonical.mode === 'primary') lines.push('mode: primary');
 
-    lines.push(`tools: ${tools}`);
+    lines.push(`tools: ${taskAgents}${tools}`);
 
     if (canonical.skills?.length) {
       lines.push('skills:');
